@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\PaperStoreRequest;
+use App\Models\Paper;
 
 class PaperController extends Controller
 {
@@ -15,11 +17,19 @@ class PaperController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * メモ登録処理
      */
-    public function store(Request $request)
+    public function store(PaperStoreRequest $request)
     {
-        //
+        $validated = $request->validated();
+        // 後で変更
+        $validated['user_id'] = 1;
+        $paper = Paper::create($validated);
+
+        return response()->json([
+            'message' => 'メモを保存しました！',
+            'data' => $paper,
+        ], 201);
     }
 
     /**
