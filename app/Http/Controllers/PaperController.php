@@ -58,10 +58,15 @@ class PaperController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * メモ削除機能
      */
     public function destroy(string $id)
     {
-        //
+        $paper = Paper::where('user_id', 1)->findOrFail($id);
+        $paper->delete();
+
+        return response()->json([
+            'message' => 'メモを削除しました'
+        ]);
     }
 }
