@@ -9,11 +9,20 @@ use App\Models\Paper;
 class PaperController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * メモ一覧取得
      */
     public function index()
     {
-        //
+        // 後で変更
+        $userId = 1;
+
+        $papers = Paper::where('user_id', $userId)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return response()->json([
+            'data' => $papers
+        ]);
     }
 
     /**
