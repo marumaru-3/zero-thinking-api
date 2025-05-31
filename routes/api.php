@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PaperController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LogoutController;
+use Illuminate\Http\Request;
 
 Route::middleware('auth:sanctum')->group(function () {
     // メモ一覧取得
@@ -13,6 +14,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/papers', [PaperController::class, 'store']);
     // メモ削除
     Route::delete('/papers/{id}', [PaperController::class, 'destroy']);
+
+    Route::get('/user', function (Request $request) {
+        return response()->json($request->user());
+    });
 });
 
 // ユーザー登録
