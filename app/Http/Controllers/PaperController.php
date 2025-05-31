@@ -11,12 +11,9 @@ class PaperController extends Controller
     /**
      * メモ一覧取得
      */
-    public function index()
+    public function index(Request $request)
     {
-        // 後で変更
-        $userId = 1;
-
-        $papers = Paper::where('user_id', $userId)
+        $papers = Paper::where('user_id', $request->user()->id)
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -32,7 +29,7 @@ class PaperController extends Controller
     {
         $validated = $request->validated();
         // 後で変更
-        $validated['user_id'] = 1;
+        $validated['user_id'] = $request->user()->id;
         $paper = Paper::create($validated);
 
         return response()->json([
@@ -60,9 +57,9 @@ class PaperController extends Controller
     /**
      * メモ削除機能
      */
-    public function destroy(string $id)
+    public function destroy(Request $request, string $id)
     {
-        $paper = Paper::where('user_id', 1)->findOrFail($id);
+        $paper = Paper::where('user_id', $request->user()->id)->findOrFail($id);
         $paper->delete();
 
         return response()->json([
