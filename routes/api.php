@@ -7,22 +7,19 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LogoutController;
 use Illuminate\Http\Request;
 
-Route::middleware('auth:sanctum')->group(function () {
-    // メモ一覧取得
-    Route::get('/papers', [PaperController::class, 'index']);
-    // メモ登録
-    Route::post('/papers', [PaperController::class, 'store']);
-    // メモ削除
-    Route::delete('/papers/{id}', [PaperController::class, 'destroy']);
+// 認証系ルート
+Route::post('/register', RegisterController::class);
+Route::post('/login', LoginController::class);
+Route::middleware('auth:sanctum')->post('/logout', LogoutController::class);
 
-    Route::get('/user', function (Request $request) {
-        return response()->json($request->user());
-    });
+// 認証済みユーザー情報取得
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return response()->json($request->user());
 });
 
-// ユーザー登録
-Route::post('/register', RegisterController::class);
-// ログイン処理
-Route::post('/login', LoginController::class);
-// ログアウト機能
-Route::middleware('auth:sanctum')->post('/logout', LogoutController::class);
+// 業務機能（メモ関連）
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/papers', [PaperController::class, 'index']);
+    Route::post('/papers', [PaperController::class, 'store']);
+    Route::delete('/papers/{id}', [PaperController::class, 'destroy']);
+});
