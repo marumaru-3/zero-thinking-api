@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\PaperStoreRequest;
 use App\Models\Paper;
+use App\Http\Resources\PaperResource;
 
 class PaperController extends Controller
 {
@@ -17,9 +18,7 @@ class PaperController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return response()->json([
-            'data' => $papers
-        ]);
+        return PaperResource::collection($papers);
     }
 
     /**
@@ -28,7 +27,6 @@ class PaperController extends Controller
     public function store(PaperStoreRequest $request)
     {
         $validated = $request->validated();
-        // 後で変更
         $validated['user_id'] = $request->user()->id;
         $paper = Paper::create($validated);
 
