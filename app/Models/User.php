@@ -46,4 +46,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // ユーザーと紐づいたメモを取得
+    public function papers()
+    {
+        return $this->hasMany(Paper::class);
+    }
 }
